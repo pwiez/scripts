@@ -1,93 +1,92 @@
-echo -en "\033]1; Renomeador de fotos para macOS e Linux em bash \007"
+echo -en "\033]1; Bash Photos and Videos Renamer \007"
 clear
 
-#Esse script utiliza o software ExifTool.
-#O ExifTool pode ser baixado e consultado em https://exiftool.org/
-#Certifique-se de que ele está instalado no sistema e disponível no seu $PATH.
+#This script uses the Exiftool software.
+#It can be downloaded at https://exiftool.org/
+#Make sure it's in your system and accessible via $PATH before running this script.
 
-#Esse bash script utiliza o ExifTool para automatizar a tarefa de renomear fotos e vídeos
-#de acordo com a data em que foram tirados / gravados, com a possibilidade de adicionar
-#uma tag ("etiqueta") extra ao nome.
+#The purpose of this script is to automate the renaming of photo and video files
+#according to the media's date of creation (note that this isn't the *file* creation date)
+#and also allow for an extra tag to be appended to the filename, if desired.
 
-#Nem todos os tipos de arquivo são suportados, apenas os mais populares.
-#São os arquivos tipicamente gerados por smartphones e câmeras digitais.
+#Not all kinds of files are supported, only some of the most popular.
 
 while true
 do
-	read -p "Insira o endereço do diretório onde estão os arquivos (não-recursivo): " DIR
-	read -p "Insira a etiqueta (apenas aperte Enter se não quiser uma): " TAG
+	read -p "Enter the directory path where the media is: " DIR
+	read -p "Add the extra tag (leave blank and press Enter for no tag): " TAG
 	clear
 	sleep .8
 
 	if [ -z "$TAG" ]
 	then
 
-	echo "Processando vídeos..."
-		echo "Processando arquivos MOV..."
+	echo "Processing videos..."
+		echo "Processing files of type MOV..."
 			exiftool -progress -preserve '-FileName<${CreateDate}%+c.%e' -d %Y.%m.%d_%Hh%Mm%Ss -api QuickTimeUTC -ext mov "$DIR"
 			sleep .8
-		echo "Processando arquivos MP4..."
+		echo "Processing files of type MP4..."
 			exiftool -progress -preserve '-FileName<${CreateDate}%+c.%e' -d %Y.%m.%d_%Hh%Mm%Ss -api QuickTimeUTC -ext mp4 "$DIR"
 			sleep .8
-		echo "Processando arquivos 3gp..."
+		echo "Processing files of type 3gp..."
 			exiftool -progress -preserve '-FileName<${CreateDate}%+c.%e' -d %Y.%m.%d_%Hh%Mm%Ss -api QuickTimeUTC -ext 3gp "$DIR"
 			sleep .8
 	clear
 
-	echo "Processando fotos..."
-		echo "Processando arquivos JPG..."
+	echo "Processing photos..."
+		echo "Processing files of type JPG..."
 			exiftool -progress -preserve '-FileName<${DateTimeOriginal}%+c.%e' -d %Y.%m.%d_%Hh%Mm%Ss -ext jpg "$DIR"
 			sleep .8
-		echo "Processando arquivos JPEG..."
+		echo "Processing files of type JPEG..."
 			exiftool -progress -preserve '-FileName<${DateTimeOriginal}%+c.%e' -d %Y.%m.%d_%Hh%Mm%Ss -ext jpeg "$DIR"
 			sleep .8
-		echo "Processando arquivos HEIC..."
+		echo "Processing files of type HEIC..."
 			exiftool -progress -preserve '-FileName<${DateTimeOriginal}%+c.%e' -d %Y.%m.%d_%Hh%Mm%Ss -ext HEIC "$DIR"
 			sleep .8
-		echo "Processando arquivos CR2..."
+		echo "Processing files of type CR2..."
 			exiftool -progress -preserve '-FileName<${DateTimeOriginal}%+c.%e' -d %Y.%m.%d_%Hh%Mm%Ss -ext CR2 "$DIR"
 			sleep .8
 	else
 
-	echo "Processando vídeos..."
-		echo "Processando arquivos MOV..."
+	echo "Processing videos..."
+		echo "Processing files of type MOV..."
 			exiftool -progress -preserve '-FileName<${CreateDate}%+c.%e' -d "%Y.%m.%d_%Hh%Mm%Ss $TAG" -api QuickTimeUTC -ext mov "$DIR"
 			sleep .8
-		echo "Processando arquivos MP4..."
+		echo "Processing files of type MP4..."
 			exiftool -progress -preserve '-FileName<${CreateDate}%+c.%e' -d "%Y.%m.%d_%Hh%Mm%Ss $TAG" -api QuickTimeUTC -ext mp4 "$DIR"
 			sleep .8
-		echo "Processando arquivos 3gp..."
+		echo "Processing files of type 3gp..."
 			exiftool -progress -preserve '-FileName<${CreateDate}%+c.%e' -d "%Y.%m.%d_%Hh%Mm%Ss $TAG" -api QuickTimeUTC -ext 3gp "$DIR"
 			sleep .8
 	clear
 
-	echo "Processando fotos..."
-		echo "Processando arquivos JPG..."
+	echo "Processing photos..."
+		echo "Processing files of type JPG..."
 			exiftool -progress -preserve '-FileName<${DateTimeOriginal}%+c.%e' -d "%Y.%m.%d_%Hh%Mm%Ss $TAG" -ext jpg "$DIR"
 			sleep .8
-		echo "Processando arquivos JPEG..."
+		echo "Processing files of type JPEG..."
 			exiftool -progress -preserve '-FileName<${DateTimeOriginal}%+c.%e' -d "%Y.%m.%d_%Hh%Mm%Ss $TAG" -ext jpeg "$DIR"
 			sleep .8
-		echo "Processando arquivos HEIC..."
+		echo "Processing files of type HEIC..."
 			exiftool -progress -preserve '-FileName<${DateTimeOriginal}%+c.%e' -d "%Y.%m.%d_%Hh%Mm%Ss $TAG" -ext HEIC "$DIR"
 			sleep .8
-		echo "Processando arquivos CR2..."
+		echo "Processing files of type CR2..."
 			exiftool -progress -preserve '-FileName<${DateTimeOriginal}%+c.%e' -d "%Y.%m.%d_%Hh%Mm%Ss $TAG" -ext CR2 "$DIR"
 			sleep .8
 	fi
 
 	clear
 
-	echo 'Repetir a operação? Digite o número: '
-	select repeat in Sim Não
+	echo 'Repeat the operation for another directory? Select the appropriate number: '
+	select repeat in Yes No
 		do
 			case $repeat in
-				"Sim")
+				"Yes")
 				unset TAG; unset DIR; clear; break;;
-				"Não")
+				"No")
 				unset TAG; unset DIR; exit;;
 				*)
-				echo "Tente de novo...";;
+				echo "Try again...";;
 			esac
 		done
 done
