@@ -18,6 +18,8 @@ do
 	clear
 	sleep .8
 
+	cd $DIR
+
 	if [ -z "$TAG" ]
 	then
 
