@@ -13,8 +13,10 @@ clear
 
 while true
 do
-	read -p "Enter the directory path where the media is: " DIR
-	read -p "Add the extra tag (leave blank and press Enter for no tag): " TAG
+    read -p "Enter the directory path where the media is: " DIR
+    DIR="${DIR%\'*}"
+    DIR="${DIR#\'}"
+    read -p "Add the extra tag (leave blank and press Enter for no tag): " TAG
 	clear
 	sleep .8
 
